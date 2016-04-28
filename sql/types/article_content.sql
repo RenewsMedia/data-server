@@ -1,0 +1,1 @@
+CREATE TYPE 'ARTICLE_CONTENT' AS ENUM ('text', 'link', 'cite', 'image');

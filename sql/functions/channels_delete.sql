@@ -1,10 +1,10 @@
-CREATE FUNCTION 'comments_delete' (
+CREATE FUNCTION 'channels_delete' (
     id INTEGER
 ) RETURNS BOOLEAN LANGUAGE plpgsql SECURITY DEFINER AS $$
     BEGIN
         DELETE
-          FROM 'comments'
-         WHERE 'id' = id;
+          FROM 'channels'
+         WHERE 'channels'.'id' = id;
 
         RETURN FOUND;
     END;

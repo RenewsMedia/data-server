@@ -3,10 +3,11 @@ CREATE TABLE IF NOT EXISTS 'contents' (
     'type'      ARTICLE_CONTENT DEFAULT 'text',
     'article'   INTEGER NOT NULL,
     'url'       VARCHAR(300),
-    'data'      INTEGER,
+    'data'      INTEGER NOT NULL,
     'order'     INTEGER DEFAULT 0,
 
     FOREIGN KEY ('article') REFERENCES 'articles' ('id'),
+    FOREIGN KEY ('data') REFERENCES 'text_data' ('id'),
     PRIMARY KEY ('id')
 );
 CREATE INDEX ON 'channels' ('url');

@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS 'channels' (
     'owner'         INTEGER NOT NULL,
     'name'          VARCHAR(20) NOT NULL,
     'description'   VARCHAR(5000) NOT NULL,
-    'date_create'   TIMESTAMP DEFAULT now(),
+    'date_create'   TIMESTAMP DEFAULT (now() at time zone 'utc'),
 
     FOREIGN KEY ('owner') REFERENCES 'users' ('id'),
     PRIMARY KEY ('id')

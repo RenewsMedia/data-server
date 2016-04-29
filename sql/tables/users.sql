@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS 'users' (
     'name'      VARCHAR(20),
     'surname'   VARCHAR(20),
     'country'   VARCHAR(2),
-    'date_reg'  TIMESTAMP DEFAULT now(),
+    'date_reg'  TIMESTAMP DEFAULT (now() at time zone 'utc'),
 
     FOREIGN KEY ('country') REFERENCES 'countries' ('code'),
     PRIMARY KEY ('id')

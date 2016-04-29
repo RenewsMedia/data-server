@@ -1,4 +1,4 @@
-CREATE FUNCTION 'comments_delete' (
+CREATE FUNCTION 'f_main'.'comments_delete' (
     id INTEGER
 ) RETURNS BOOLEAN LANGUAGE plpgsql SECURITY DEFINER AS $$
     BEGIN

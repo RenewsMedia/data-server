@@ -1,10 +1,10 @@
-CREATE FUNCTION 'channels_delete' (
+CREATE FUNCTION 'f_main'.'channels_delete' (
     id INTEGER
 ) RETURNS BOOLEAN LANGUAGE plpgsql SECURITY DEFINER AS $$
     BEGIN
         DELETE
           FROM 'channels'
-         WHERE 'channels'.'id' = id;
+         WHERE 'id' = id;
 
         RETURN FOUND;
     END;

@@ -1,4 +1,4 @@
-CREATE FUNCTION 'users_update' (
+CREATE FUNCTION 'f_main'.'users_update' (
     id      INTEGER,
     mail    TEXT,
     country TEXT,
@@ -11,7 +11,7 @@ CREATE FUNCTION 'users_update' (
                'country' = country,
                'name'    = name,
                'surname' = surname
-           WHERE 'users'.'id' = id;
+         WHERE 'id' = id;
 
         RETURN FOUND;
     END;

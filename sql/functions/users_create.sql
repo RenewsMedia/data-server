@@ -1,4 +1,4 @@
-CREATE FUNCTION 'users_create' (
+CREATE FUNCTION 'f_main'.'users_create' (
     login       TEXT,
     password    TEXT,
     mail        TEXT,
@@ -14,7 +14,7 @@ CREATE FUNCTION 'users_create' (
               VALUES (login, '', mail, country, name, surname)
            RETURNING 'id';
 
-        IF id <> NULL THEN
+        IF FOUND THEN
             users_update_password(id, password);
         END IF;
 

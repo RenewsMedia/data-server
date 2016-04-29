@@ -1,4 +1,4 @@
-CREATE FUNCTION 'comments_create' (
+CREATE FUNCTION 'f_main'.'comments_create' (
     author      INTEGER,
     text_data   TEXT
 ) RETURNS INTEGER LANGUAGE plpgsql SECURITY DEFINER AS $$

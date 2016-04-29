@@ -1,4 +1,4 @@
-CREATE FUNCTION 'text_data_create' (
+CREATE FUNCTION 'f_main'.'text_data_create' (
     data TEXT
 ) RETURNS INTEGER LANGUAGE plpgsql SECURITY DEFINER AS $$
     BEGIN

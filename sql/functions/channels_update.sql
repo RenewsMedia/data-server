@@ -1,4 +1,4 @@
-CREATE FUNCTION 'channels_create' (
+CREATE FUNCTION 'f_main'.'channels_update' (
     id          INTEGER,
     name        TEXT,
     description TEXT DEFAULT ''
@@ -7,7 +7,7 @@ CREATE FUNCTION 'channels_create' (
         UPDATE 'channels'
            SET 'name'           = name,
                'description'    = description
-         WHERE 'channels'.'id' = id;
+         WHERE 'id' = id;
 
         RETURN FOUND;
     END;

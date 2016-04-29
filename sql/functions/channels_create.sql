@@ -1,4 +1,4 @@
-CREATE FUNCTION 'channels_create' (
+CREATE FUNCTION 'f_main'.'channels_create' (
     owner       INTEGER,
     name        TEXT,
     description TEXT DEFAULT ''

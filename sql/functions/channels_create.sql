@@ -1,14 +1,16 @@
-CREATE FUNCTION 'f_main'.'channels_create' (
-    owner       INTEGER,
-    name        TEXT,
-    description TEXT DEFAULT ''
+CREATE OR REPLACE FUNCTION channels_create (
+  owner       INTEGER,
+  name        TEXT,
+  description TEXT
 ) RETURNS INTEGER LANGUAGE plpgsql SECURITY DEFINER AS $$
-    BEGIN
-        RETURN (
-            INSERT
-              INTO 'channels' ('owner', 'name', 'description')
-            VALUES (owner, name, description)
-         RETURNING 'id'
-        );
-    END;
+  DECLARE
+    id INTEGER DEFAULT -1;
+  BEGIN
+    INSERT
+    INTO "channels" ("owner", "name", "description")
+    VALUES ($1, $2, $3)
+    RETURNING "id" INTO id;
+
+    RETURN id;
+  END;
 $$;

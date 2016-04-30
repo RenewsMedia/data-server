@@ -1,12 +1,12 @@
-CREATE FUNCTION 'f_main'.'users_update_password' (
-    id          INTEGER,
-    password    TEXT
+CREATE OR REPLACE FUNCTION users_update_password (
+  id       INTEGER,
+  password TEXT
 ) RETURNS BOOLEAN LANGUAGE plpgsql SECURITY DEFINER AS $$
-    BEGIN
-        UPDATE 'users'
-           SET 'password' = md5(password)
-         WHERE 'id' = id;
+  BEGIN
+    UPDATE "users"
+    SET "password" = md5($2)
+    WHERE "id" = $1;
 
-        RETURN FOUND;
-    END;
+    RETURN FOUND;
+  END;
 $$;

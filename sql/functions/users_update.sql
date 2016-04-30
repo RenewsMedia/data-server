@@ -1,18 +1,18 @@
-CREATE FUNCTION 'f_main'.'users_update' (
-    id      INTEGER,
-    mail    TEXT,
-    country TEXT,
-    name    TEXT DEFAULT '',
-    surname TEXT DEFAULT ''
+CREATE OR REPLACE FUNCTION users_update (
+  id      INTEGER,
+  mail    TEXT,
+  country TEXT,
+  name    TEXT,
+  surname TEXT
 ) RETURNS BOOLEAN LANGUAGE plpgsql SECURITY DEFINER AS $$
-    BEGIN
-        UPDATE 'users'
-           SET 'mail'    = mail,
-               'country' = country,
-               'name'    = name,
-               'surname' = surname
-         WHERE 'id' = id;
+  BEGIN
+    UPDATE "users"
+    SET "mail"    = $2,
+        "country" = $3,
+        "name"    = $4,
+        "surname" = $5
+    WHERE "id" = $1;
 
-        RETURN FOUND;
-    END;
+    RETURN FOUND;
+  END;
 $$;

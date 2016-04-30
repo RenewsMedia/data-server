@@ -1,4 +1,4 @@
-INSERT INTO 'countries' ('code', 'name', 'phone_code') VALUES
+INSERT INTO "countries" ("code", "name", "phone_code") VALUES
 ('AF', 'Afghanistan', '93'),
 ('AL', 'Albania', '355'),
 ('DZ', 'Algeria', '213'),

@@ -1,14 +1,14 @@
-CREATE FUNCTION 'f_main'.'channels_update' (
-    id          INTEGER,
-    name        TEXT,
-    description TEXT DEFAULT ''
+CREATE OR REPLACE FUNCTION channels_update (
+  id          INTEGER,
+  name        TEXT,
+  description TEXT
 ) RETURNS BOOLEAN LANGUAGE plpgsql SECURITY DEFINER AS $$
-    BEGIN
-        UPDATE 'channels'
-           SET 'name'           = name,
-               'description'    = description
-         WHERE 'id' = id;
+  BEGIN
+    UPDATE "channels"
+    SET "name"        = $2,
+        "description" = $3
+    WHERE "id" = $1;
 
-        RETURN FOUND;
-    END;
+    RETURN FOUND;
+  END;
 $$;

@@ -1,11 +1,11 @@
-CREATE FUNCTION 'f_main'.'comments_delete' (
-    id INTEGER
+CREATE OR REPLACE FUNCTION comments_delete (
+  id INTEGER
 ) RETURNS BOOLEAN LANGUAGE plpgsql SECURITY DEFINER AS $$
-    BEGIN
-        DELETE
-          FROM 'comments'
-         WHERE 'id' = id;
+  BEGIN
+    DELETE
+    FROM "comments"
+    WHERE "id" = $1;
 
-        RETURN FOUND;
-    END;
+    RETURN FOUND;
+  END;
 $$;

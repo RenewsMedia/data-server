@@ -1,0 +1,39 @@
+{
+  "server": {
+    "host": "localhost:5000"
+  },
+  "db": {
+    "host": "localhost",
+    "port": "5432",
+    "user": "postgres",
+    "password": "1111",
+    "name": "Renews",
+
+    "install": {
+      "types": [
+        "article_content"
+      ],
+      "tables": [
+        "access_codes", "countries", "roles", "tags",
+        "text_data", "users", "channels", "channel_roles",
+        "comments", "articles", "article_comments",
+        "article_tags", "contents"
+      ],
+      "utils": [
+        "check_permissions"
+      ],
+      "functions": [
+        "article_tags_set", "articles_create", "channel_roles_delegate",
+        "channel_roles_undelegate", "channels_create", "channels_delete",
+        "channels_update", "text_data_create", "text_data_update",
+        "comments_create", "comments_delete", "comments_update",
+        "contents_create", "users_create", "users_update",
+        "users_update_password"
+      ],
+      "base_data": [
+        "access_codes", "countries", "roles"
+      ]
+    },
+    "install_order": ["types", "tables", "utils", "functions", "base_data"]
+  }
+}

@@ -1,15 +1,15 @@
 from flask import request
-from api.v1 import app, db, make_path, check_set
+from api.v1 import app, db, make_path, check_set, gen_resp
 from api.v1.exceptions.BadStructure import BadStructure
 from api.v1.exceptions.NotFound import NotFound
 
 
 @app.route(make_path('/user/<int:user_id>'), methods=['GET'])
 def read(user_id):
-    result = db.fetch_one('PERFORM users_read_by_id({id})'.format(id=user_id))
-    if not result:
+    user = db.fetch_one('PERFORM users_read_by_id({id})'.format(id=user_id))
+    if not user:
         raise NotFound
-    return result
+    return gen_resp(user)
 
 
 @app.route(make_path('/user'), methods=['POST'])
@@ -18,9 +18,11 @@ def create():
         raise BadStructure
 
     with request.form as form:
-        return db.fetch_one("""
-            PERFORM users_create({login}, {password}, {mail}, {country}, {name}, {surname})
-        """.format(**form))
+        return gen_resp(
+            db.fetch_one("""
+                PERFORM users_create({login}, {password}, {mail}, {country}, {name}, {surname})
+            """.format(**form))
+        )
 
 
 @app.route(make_path('/user/<int:user_id>'), methods=['PUT'])
@@ -29,9 +31,11 @@ def update(user_id):
         raise BadStructure
 
     with request.form as form:
-        return db.fetch_one("""
-            PERFORM users_update({id}, {mail}, {country}, {name}, {surname})
-        """.format(id=user_id, **form))
+        return gen_resp(
+            db.fetch_one("""
+                PERFORM users_update({id}, {mail}, {country}, {name}, {surname})
+            """.format(id=user_id, **form))
+        )
 
 
 # /user/password
@@ -40,6 +44,8 @@ def update_password(user_id):
     if not check_set(['password'], request.form):
         raise BadStructure
 
-    return db.fetch_one("""
+    result = db.fetch_one("""
         PERFORM users_update_password({id}, {password})
     """.format(id=user_id, password=request.form.password))[0]
+
+    return gen_resp({'result': result})

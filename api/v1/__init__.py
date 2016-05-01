@@ -16,9 +16,14 @@ def make_path(path):
 import api.v1.user
 
 
+# Response generator
+def gen_resp(params, status_code=200):
+    response = jsonify(params)
+    response.status_code = status_code
+    return response
+
+
 # Error handlers
 @app.errorhandler(Exception)
 def on_error(e):
-    response = jsonify(e.to_dict())
-    response.status_code = e.status_code
-    return response
+    return gen_resp(e.to_dict(), e.status_code)

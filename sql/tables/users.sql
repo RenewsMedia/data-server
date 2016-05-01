@@ -14,3 +14,5 @@ CREATE TABLE IF NOT EXISTS "users" (
   PRIMARY KEY ("id")
 );
 CREATE INDEX ON "users" (lower('login'));
+CREATE INDEX ON "users" (lower('mail'));
+CREATE INDEX ON "users" (lower('name'), lower('surname'));

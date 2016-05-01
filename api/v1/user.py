@@ -6,9 +6,13 @@ from api.v1.exceptions.NotFound import NotFound
 
 @app.route(make_path('/user/<int:user_id>'), methods=['GET'])
 def read(user_id):
-    user = db.fetch_one('PERFORM users_read_by_id({id})'.format(id=user_id))
+    user = db.fetch_one("""
+        PERFORM users_read_by_id({id})
+    """.format(id=user_id))
+
     if not user:
         raise NotFound
+
     return gen_resp(user)
 
 

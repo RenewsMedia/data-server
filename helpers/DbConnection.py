@@ -17,7 +17,7 @@ class DbConnection:
             )
 
     def cursor(self):
-        return self.db.cursor()
+        return self.db.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
     def commit(self):
         self.db.commit()
@@ -36,5 +36,13 @@ class DbConnection:
         cursor.execute(query)
         self.commit()
         result = cursor.fetchall()
+        cursor.close()
+        return result
+
+    def fetch_one(self, query):
+        cursor = self.cursor()
+        cursor.execute(query)
+        self.commit()
+        result = cursor.fetchone()
         cursor.close()
         return result

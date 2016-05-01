@@ -6,10 +6,10 @@ from api.v1.exceptions.NotFound import NotFound
 
 @app.route(make_path('/user/<int:user_id>'), methods=['GET'])
 def read(user_id):
-    result = db.fetch('PERFORM users_read_by_id({id})'.format(id=user_id))
-    if not len(result):
+    result = db.fetch_one('PERFORM users_read_by_id({id})'.format(id=user_id))
+    if not result:
         raise NotFound
-    return result[0]
+    return result
 
 
 @app.route(make_path('/user'), methods=['POST'])
@@ -18,9 +18,9 @@ def create():
         raise BadStructure
 
     with request.form as form:
-        return db.fetch("""
+        return db.fetch_one("""
             PERFORM users_create({login}, {password}, {mail}, {country}, {name}, {surname})
-        """.format(**form))[0]
+        """.format(**form))
 
 
 @app.route(make_path('/user/<int:user_id>'), methods=['PUT'])
@@ -29,9 +29,9 @@ def update(user_id):
         raise BadStructure
 
     with request.form as form:
-        return db.fetch("""
+        return db.fetch_one("""
             PERFORM users_update({id}, {mail}, {country}, {name}, {surname})
-        """.format(id=user_id, **form))[0]
+        """.format(id=user_id, **form))
 
 
 # /user/password
@@ -40,7 +40,6 @@ def update_password(user_id):
     if not check_set(['password'], request.form):
         raise BadStructure
 
-    with request.form as form:
-        return db.fetch("""
-            PERFORM users_update_password({id}, {password})
-        """.format(id=user_id, **form))[0]
+    return db.fetch_one("""
+        PERFORM users_update_password({id}, {password})
+    """.format(id=user_id, password=request.form.password))[0]

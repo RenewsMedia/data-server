@@ -30,3 +30,11 @@ class DbConnection:
         cursor.execute(query)
         self.commit()
         cursor.close()
+
+    def fetch(self, query):
+        cursor = self.cursor()
+        cursor.execute(query)
+        self.commit()
+        result = cursor.fetchall()
+        cursor.close()
+        return result

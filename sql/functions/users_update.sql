@@ -4,7 +4,7 @@ CREATE OR REPLACE FUNCTION users_update (
   country TEXT,
   name    TEXT,
   surname TEXT
-) RETURNS BOOLEAN LANGUAGE plpgsql SECURITY DEFINER AS $$
+) RETURNS SETOF RECORD LANGUAGE plpgsql SECURITY DEFINER AS $$
   BEGIN
     UPDATE "users"
     SET "mail"    = $2,
@@ -13,6 +13,6 @@ CREATE OR REPLACE FUNCTION users_update (
         "surname" = $5
     WHERE "id" = $1;
 
-    RETURN FOUND;
+    RETURN QUERY EXECUTE users_read_by_id($1);
   END;
 $$;

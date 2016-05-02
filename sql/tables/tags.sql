@@ -1,5 +1,6 @@
 CREATE TABLE IF NOT EXISTS "tags" (
   "id" VARCHAR(30) NOT NULL,
+  "status" TAG_STATUS DEFAULT 'new',
 
   PRIMARY KEY ("id")
 );

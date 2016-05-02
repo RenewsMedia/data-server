@@ -40,16 +40,3 @@ def update(user_id):
                 PERFORM users_update({id}, {mail}, {country}, {name}, {surname})
             """.format(id=user_id, **form))
         )
-
-
-# /user/password
-@app.route(make_path('/user/password/<int:user_id>'), methods=['PUT'])
-def update_password(user_id):
-    if not check_set(['password'], request.form):
-        raise BadStructure
-
-    result = db.fetch_one("""
-        PERFORM users_update_password({id}, {password})
-    """.format(id=user_id, password=request.form.password))[0]
-
-    return gen_resp({'result': result})

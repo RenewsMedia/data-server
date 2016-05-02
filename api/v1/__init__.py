@@ -14,6 +14,8 @@ def make_path(path):
 
 # Import entities
 import api.v1.user
+import api.v1.user_password
+import api.v1.users
 
 
 # Response generator

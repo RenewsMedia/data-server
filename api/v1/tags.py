@@ -12,7 +12,7 @@ def read_by_status(status='any'):
 
 @app.route(make_path('/tags'), methods=['POST'])
 @auth.login_required
-def create():
+def create_tags():
     if not request.json or not check_set(['tags'], request.json):
         raise BadStructure
 
@@ -24,7 +24,7 @@ def create():
 
 @app.route(make_path('/tags'), methods=['PUT'])
 @auth.login_required
-def update():
+def update_tags():
     if not request.json or not check_set(['tags', 'status'], request.json):
         raise BadStructure
 

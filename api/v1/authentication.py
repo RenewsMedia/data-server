@@ -3,7 +3,20 @@ from flask import request
 from api.v1 import app, auth, db, config, make_path, check_set, user
 from api.v1.exceptions.BadStructure import BadStructure
 
+# Flask HttpAuth configuration
+@auth.get_password
+def get_password(username):
+    return db.fetch_one("""
+        SELECT * FROM users_read_auth_info({login});
+    """.format(login=username))['password']
 
+
+@auth.hash_password
+def hash_password(password):
+    return md5(password).hexdigest()
+
+
+# Base sign in method
 def sign_in(login, password):
     usr = db.fetch_one("""
         SELECT * FROM users_read_auth_info({user_login}) LIMIT 1
@@ -18,6 +31,7 @@ def sign_in(login, password):
     return False
 
 
+# User authentication api
 @app.route(make_path('/sign/in'), methods=['POST'])
 def sign_in_from_json():
     if not request.json or not check_set(['password'], request.json):

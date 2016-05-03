@@ -36,5 +36,7 @@ def on_error(e):
 
 
 # Import entities
+import api.v1.authentication
 import api.v1.user
 import api.v1.users
+import api.v1.tags

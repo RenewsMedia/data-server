@@ -36,5 +36,9 @@
       ]
     },
     "install_order": ["types", "tables", "utils", "functions", "base_data"]
+  },
+  "auth": {
+    "id_cookie": "__uid",
+    "pass_cookie": "__ups"
   }
 }

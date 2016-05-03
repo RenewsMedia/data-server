@@ -1,6 +1,6 @@
 from hashlib import md5
 from flask import request
-from api.v1 import app, db, make_path, check_set, user
+from api.v1 import app, db, config, make_path, check_set, user
 from api.v1.exceptions.BadStructure import BadStructure
 
 
@@ -11,8 +11,9 @@ def sign_in(login, password):
 
     if usr and usr['password'] == md5(password).hexdigest():
         response = app.make_response(True)
-        response.set_cookie('__uid', login)
-        response.set_cookie('__ups', usr['password'])
+        response.set_cookie(config['auth']['id_cookie'], login)
+        response.set_cookie(config['auth']['pass_cookie'], usr['password'])
+        return response
 
     return False
 
@@ -34,3 +35,12 @@ def sign_up():
         return sign_in(usr['login'], request.json['password'])
 
     return False
+
+
+@app.route(make_path('/sign/out'), methods=['POST'])
+def sign_out():
+    response = app.make_response(True)
+    response.set_cookie(config['auth']['id_cookie'], '')
+    response.set_cookie(config['auth']['pass_cookie'], '')
+
+    return response

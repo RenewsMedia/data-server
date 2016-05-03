@@ -2,6 +2,8 @@ from hashlib import md5
 from flask import request
 from api.v1 import app, auth, db, config, make_path, check_set, user
 from api.v1.exceptions.BadStructure import BadStructure
+from api.v1.exceptions.AuthRequired import AuthRequired
+
 
 # Flask HttpAuth configuration
 @auth.get_password
@@ -14,6 +16,11 @@ def get_password(username):
 @auth.hash_password
 def hash_password(password):
     return md5(password).hexdigest()
+
+
+@auth.error_handler
+def on_auth_error():
+    raise AuthRequired
 
 
 # Base sign in method

@@ -1,6 +1,6 @@
 from hashlib import md5
 from flask import request
-from api.v1 import app, db, config, make_path, check_set, user
+from api.v1 import app, auth, db, config, make_path, check_set, user
 from api.v1.exceptions.BadStructure import BadStructure
 
 
@@ -38,6 +38,7 @@ def sign_up():
 
 
 @app.route(make_path('/sign/out'), methods=['POST'])
+@auth.login_required
 def sign_out():
     response = app.make_response(True)
     response.set_cookie(config['auth']['id_cookie'], '')

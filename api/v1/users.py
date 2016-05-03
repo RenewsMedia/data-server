@@ -1,5 +1,5 @@
 from flask import request
-from api.v1 import app, db, make_path, gen_resp
+from api.v1 import app, db
 from api.v1.exceptions.BadStructure import BadStructure
 
 
@@ -13,7 +13,7 @@ def prepare_query(query):
     return query
 
 
-@app.route(make_path('/users'), methods=['GET'])
+@app.route('/users', methods=['GET'])
 def search():
     if not request.json:
         raise BadStructure

@@ -1,6 +1,6 @@
 from hashlib import md5
 from flask import request
-from api.v1 import app, auth, db, config, make_path, check_set, user
+from api.v1 import app, auth, db, config, check_set, user
 from api.v1.exceptions.BadStructure import BadStructure
 from api.v1.exceptions.AuthRequired import AuthRequired
 
@@ -39,14 +39,14 @@ def sign_in(login, password):
 
 
 # User authentication api
-@app.route(make_path('/sign/in'), methods=['POST'])
+@app.route('/sign/in', methods=['POST'])
 def sign_in_from_json():
     if not request.json or not check_set(['password'], request.json):
         raise BadStructure
     return sign_in(**request.json)
 
 
-@app.route(make_path('/sign/up'), methods=['POST'])
+@app.route('/sign/up', methods=['POST'])
 def sign_up():
     if not request.json:
         raise BadStructure
@@ -58,7 +58,7 @@ def sign_up():
     return False
 
 
-@app.route(make_path('/sign/out'), methods=['POST'])
+@app.route('/sign/out', methods=['POST'])
 @auth.login_required
 def sign_out():
     response = app.make_response(True)

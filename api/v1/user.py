@@ -1,10 +1,10 @@
 from flask import request
-from api.v1 import app, auth, db, make_path, check_set
+from api.v1 import app, auth, db, check_set
 from api.v1.exceptions.BadStructure import BadStructure
 from api.v1.exceptions.NotFound import NotFound
 
 
-@app.route(make_path('/user/<int:user_id>'), methods=['GET'])
+@app.route('/user/<int:user_id>', methods=['GET'])
 def read(user_id):
     user = db.fetch_one("""
         SELECT * FROM users_read_by_id({id}) LIMIT 1;
@@ -25,7 +25,7 @@ def create(data):
         """.format(**data))
 
 
-@app.route(make_path('/user/<int:user_id>'), methods=['PUT'])
+@app.route('/user/<int:user_id>', methods=['PUT'])
 @auth.login_required
 def update(user_id):
     if not request.json or not check_set(['mail', 'country', 'name', 'surname'], request.json):
@@ -38,7 +38,7 @@ def update(user_id):
 
 
 # /user/password
-@app.route(make_path('/user/password/<int:user_id>'), methods=['PUT'])
+@app.route('/user/password/<int:user_id>', methods=['PUT'])
 @auth.login_required
 def update_password(user_id):
     if not request.json or not check_set(['password'], request.json):

@@ -3,6 +3,8 @@ from helpers import config
 
 
 class App(Flask):
+    user = None
+
     def __init__(self, name):
         super(App, self).__init__(name)
         self.config['SERVER_NAME'] = config['server']['host']

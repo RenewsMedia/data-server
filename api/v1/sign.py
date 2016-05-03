@@ -8,8 +8,8 @@ from api.v1.exceptions.BadStructure import BadStructure
 # Base sign in method
 def sign_in(login, password):
     usr = db.fetch_one("""
-        SELECT * FROM users_read_auth_info({user_login}) LIMIT 1
-    """.format(user_login=login))
+        SELECT "id", "password" FROM "users" WHERE "login" = '{login}';
+    """.format(login=login))
 
     if usr and usr['password'] == md5(password).hexdigest():
         response = app.make_response(True)

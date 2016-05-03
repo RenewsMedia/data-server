@@ -1,5 +1,4 @@
 from flask.ext.httpauth import HTTPBasicAuth
-from helpers import db, config, check_set
 from api.v1.App import App
 from api.v1.exceptions.BadStructure import BadStructure
 
@@ -10,4 +9,7 @@ auth = HTTPBasicAuth()
 
 
 # Import entities
-from api.v1 import authentication, user, users, tags
+import api.v1.authentication
+import api.v1.user
+import api.v1.users
+import api.v1.tags

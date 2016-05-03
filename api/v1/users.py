@@ -1,5 +1,6 @@
 from flask import request
-from api.v1 import app, db
+from helpers import db
+from api.v1 import app
 from api.v1.exceptions.BadStructure import BadStructure
 
 

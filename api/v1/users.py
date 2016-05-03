@@ -5,13 +5,9 @@ from api.v1.exceptions.BadStructure import BadStructure
 
 
 def prepare_query(query):
-    to_replace = ['.', ',']
-
-    for sym in to_replace:
+    for sym in ['.', ',']:
         query.replace(sym, ' ')
-    query.replace('  ', ' ')
-
-    return query
+    return query.replace('  ', ' ')
 
 
 @app.route('/users', methods=['GET'])
@@ -19,8 +15,6 @@ def search():
     if not request.json:
         raise BadStructure
 
-    results = db.fetch("""
+    return db.fetch("""
         SELECT * FROM users_search({query});
     """.format(query=prepare_query(request.json.query)))
-
-    return results

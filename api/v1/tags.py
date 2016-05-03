@@ -17,22 +17,18 @@ def create_tags():
     if not request.json or not check_set(['tags'], request.json):
         raise BadStructure
 
-    with request.json as data:
-        return db.fetch_one("""
-            PERFORM tags_create({tags});
-        """.format(tags=app.list_to_sql(data.tags)))[0]
+    return db.fetch_one("""
+        PERFORM tags_create({tags});
+    """.format(tags=app.list_to_sql(request.json.tags)))[0]
 
 
 @app.route('/tags', methods=['PUT'])
 @auth.login_required
 def update_tags():
-    if not request.json or not check_set(['tags', 'status'], request.json):
+    if not request.json or not check_set(['tags', 'status'], request.json)\
+            or request.json.status not in ['new', 'approved', 'declined']:
         raise BadStructure
 
-    if request.json.status not in ['new', 'approved', 'declined']:
-        raise BadStructure
-
-    with request.json as data:
-        return db.fetch_one("""
-            PERFORM tags_update({tags}, {status});
-        """.format(tags=app.list_to_sql(data.tags), status=data.status))[0]
+    return db.fetch_one("""
+        PERFORM tags_update({tags}, {status});
+    """.format(tags=app.list_to_sql(request.json.tags), status=request.json.status))[0]

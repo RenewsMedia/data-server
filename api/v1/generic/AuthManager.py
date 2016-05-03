@@ -9,6 +9,7 @@ class AuthManager(HTTPBasicAuth):
         super(AuthManager, self).__init__()
         self.error_handler(self.on_auth_error)
 
+    @staticmethod
     def on_auth_error(self):
         raise AuthRequired
 

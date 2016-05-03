@@ -32,10 +32,9 @@ def update(user_id):
     if not request.json or not check_set(['mail', 'country', 'name', 'surname'], request.json):
         raise BadStructure
 
-    with request.json as data:
-        return db.fetch_one("""
-                SELECT * FROM users_update({id}, {mail}, {country}, {name}, {surname}) LIMIT 1;
-            """.format(id=user_id, **data))
+    return db.fetch_one("""
+            SELECT * FROM users_update({id}, {mail}, {country}, {name}, {surname}) LIMIT 1;
+        """.format(id=user_id, **request.json))
 
 
 # /user/password

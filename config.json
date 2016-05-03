@@ -28,8 +28,8 @@
         "channels_update", "text_data_create", "text_data_update",
         "comments_create", "comments_delete", "comments_update",
         "contents_create", "users_read_by_id", "users_create",
-        "users_update", "users_update_password", "tags_read", "tags_create",
-        "tags_update"
+        "users_update", "users_update_password", "users_read_auth_info",
+        "tags_read", "tags_create", "tags_update"
       ],
       "base_data": [
         "access_codes", "countries", "roles"

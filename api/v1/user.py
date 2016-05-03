@@ -1,5 +1,5 @@
 from flask import request
-from api.v1 import app, db, make_path, check_set, gen_resp
+from api.v1 import app, auth, db, make_path, check_set
 from api.v1.exceptions.BadStructure import BadStructure
 from api.v1.exceptions.NotFound import NotFound
 
@@ -7,7 +7,7 @@ from api.v1.exceptions.NotFound import NotFound
 @app.route(make_path('/user/<int:user_id>'), methods=['GET'])
 def read(user_id):
     user = db.fetch_one("""
-        SELECT * FROM users_read_by_id({id});
+        SELECT * FROM users_read_by_id({id}) LIMIT 1;
     """.format(id=user_id))
 
     if not user:
@@ -16,38 +16,36 @@ def read(user_id):
     return user
 
 
-@app.route(make_path('/user'), methods=['POST'])
-def create():
-    if not check_set(['login', 'password', 'mail', 'country', 'name', 'surname'], request.form):
+def create(data):
+    if not check_set(['login', 'password', 'mail', 'country', 'name', 'surname'], data):
         raise BadStructure
 
-    with request.form as form:
-        return gen_resp(
-            db.fetch_one("""
-                SELECT * FROM users_create({login}, {password}, {mail}, {country}, {name}, {surname});
-            """.format(**form))
-        )
+    return db.fetch_one("""
+            SELECT * FROM users_create({login}, {password}, {mail}, {country}, {name}, {surname}) LIMIT 1;
+        """.format(**data))
 
 
 @app.route(make_path('/user/<int:user_id>'), methods=['PUT'])
+@auth.login_required
 def update(user_id):
-    if not check_set(['mail', 'country', 'name', 'surname'], request.form):
+    if not request.json or not check_set(['mail', 'country', 'name', 'surname'], request.json):
         raise BadStructure
 
-    with request.form as form:
+    with request.json as data:
         return db.fetch_one("""
-                SELECT * FROM users_update({id}, {mail}, {country}, {name}, {surname});
-            """.format(id=user_id, **form))
+                SELECT * FROM users_update({id}, {mail}, {country}, {name}, {surname}) LIMIT 1;
+            """.format(id=user_id, **data))
 
 
 # /user/password
 @app.route(make_path('/user/password/<int:user_id>'), methods=['PUT'])
+@auth.login_required
 def update_password(user_id):
-    if not check_set(['password'], request.form):
+    if not request.json or not check_set(['password'], request.json):
         raise BadStructure
 
     result = db.fetch_one("""
-        SELECT * FROM users_update_password({id}, {password});
-    """.format(id=user_id, password=request.form.password))[0]
+        SELECT * FROM users_update_password({id}, {password}) LIMIT 1;
+    """.format(id=user_id, password=request.json.password))[0]
 
     return result

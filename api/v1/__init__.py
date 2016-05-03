@@ -1,4 +1,5 @@
 from flask import Flask, jsonify
+from flask.ext.httpauth import HTTPBasicAuth
 from helpers import db, config, check_set
 from api.v1.exceptions.BadStructure import BadStructure
 
@@ -6,6 +7,7 @@ __version__ = '1.0'
 
 app = Flask(__name__)
 app.config['SERVER_NAME'] = config['server']['host']
+auth = HTTPBasicAuth()
 
 
 def make_path(path):

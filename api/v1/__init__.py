@@ -11,6 +11,7 @@ auth = AuthManager()
 
 # Import entities
 import api.v1.sign
+import api.v1.countries
 import api.v1.user
 import api.v1.users
 import api.v1.tags

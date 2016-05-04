@@ -11,13 +11,13 @@ class AuthManager(HTTPBasicAuth):
         self.error_handler(self.on_auth_error)
 
     @staticmethod
-    def on_auth_error(self):
+    def on_auth_error():
         raise AuthRequired
 
     @staticmethod
     def verify_password_callback(uid, password):
         app.user = db.fetch_one("""
-            SELECT * FROM "users" WHERE "id" = {uid} AND "password" = {password}
+            SELECT * FROM "users" WHERE "id" = {uid} AND "password" = '{password}';
         """.format(uid=uid, password=password))
 
         if app.user:

@@ -5,7 +5,7 @@ CREATE OR REPLACE FUNCTION users_update_password (
   BEGIN
     UPDATE "users"
     SET "password" = md5($2)
-    WHERE "id" = $1;
+    WHERE "users"."id" = $1;
 
     RETURN FOUND;
   END;

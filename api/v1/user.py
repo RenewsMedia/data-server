@@ -5,24 +5,29 @@ from api.v1.exceptions.BadStructure import BadStructure
 from api.v1.exceptions.NotFound import NotFound
 
 
+def prepare_user(user):
+    del user['password']
+    user['date_reg'] = user['date_reg'].timestamp()
+    return user
+
+
 @app.route('/user/<int:user_id>', methods=['GET'])
 def read(user_id):
     user = db.fetch_one("""
-        SELECT * FROM users_read_by_id({id}) LIMIT 1;
+        SELECT * FROM users_read_by_id({id});
     """.format(id=user_id))
 
     if not user:
         raise NotFound
-
-    return user
+    return prepare_user(user)
 
 
 def create(data):
-    if not check_set(['login', 'password', 'mail', 'country', 'name', 'surname'], data):
+    if not data or not check_set(['login', 'password', 'mail', 'country', 'name', 'surname'], data):
         raise BadStructure
 
     return db.fetch_one("""
-            SELECT * FROM users_create({login}, {password}, {mail}, {country}, {name}, {surname}) LIMIT 1;
+            SELECT * FROM users_create('{login}', '{password}', '{mail}', '{country}', '{name}', '{surname}');
         """.format(**data))
 
 
@@ -32,9 +37,9 @@ def update(user_id):
     if not request.json or not check_set(['mail', 'country', 'name', 'surname'], request.json):
         raise BadStructure
 
-    return db.fetch_one("""
-            SELECT * FROM users_update({id}, {mail}, {country}, {name}, {surname}) LIMIT 1;
-        """.format(id=user_id, **request.json))
+    return prepare_user(db.fetch_one("""
+            SELECT * FROM users_update({id}, '{mail}', '{country}', '{name}', '{surname}');
+        """.format(id=user_id, **request.json)))
 
 
 # /user/password
@@ -44,8 +49,6 @@ def update_password(user_id):
     if not request.json or not check_set(['password'], request.json):
         raise BadStructure
 
-    result = db.fetch_one("""
-        SELECT * FROM users_update_password({id}, {password}) LIMIT 1;
-    """.format(id=user_id, password=request.json.password))[0]
-
-    return result
+    return db.fetch_one("""
+        SELECT * FROM users_update_password({id}, '{password}');
+    """.format(id=user_id, password=request.json['password']))['users_update_password']

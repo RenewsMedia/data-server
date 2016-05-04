@@ -5,7 +5,7 @@ CREATE OR REPLACE FUNCTION users_create (
   country  TEXT,
   name     TEXT,
   surname  TEXT
-) RETURNS SETOF RECORD LANGUAGE plpgsql SECURITY DEFINER AS $$
+) RETURNS SETOF "users" LANGUAGE plpgsql SECURITY DEFINER AS $$
   DECLARE
       uid INTEGER;
   BEGIN
@@ -18,6 +18,6 @@ CREATE OR REPLACE FUNCTION users_create (
         PERFORM users_update_password(uid, $2);
     END IF;
 
-    RETURN QUERY EXECUTE users_read_by_id(uid);
+    RETURN QUERY SELECT * FROM users_read_by_id(uid);
   END;
 $$;

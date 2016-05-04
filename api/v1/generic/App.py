@@ -1,5 +1,8 @@
-from flask import Flask, jsonify
+import json
+from functools import wraps
+from flask import Flask, Response, make_response
 from helpers import config
+from api.v1.exceptions.ProtoException import ProtoException
 
 
 class App(Flask):
@@ -8,15 +11,21 @@ class App(Flask):
     def __init__(self, name):
         super(App, self).__init__(name)
         self.config['SERVER_NAME'] = config['server']['host']
+        self.config['PROPAGATE_EXCEPTIONS'] = True
         self.register_handlers()
 
     def register_handlers(self):
-        self._register_error_handler(None, Exception, self.on_exception)
+        self._register_error_handler(None, ProtoException, self.on_exception)
 
     # Decorators
     def route(self, route, **options):
         def decorator(f):
-            super(App, self).route(self.make_path(route), **options)(f)
+            @wraps(f)
+            def wrapped(*args, **kwargs):
+                result = f(*args, **kwargs)
+                return self.gen_resp(result)
+
+            super(App, self).route(self.make_path(route), **options)(wrapped)
         return decorator
 
     # Utils
@@ -30,13 +39,19 @@ class App(Flask):
 
     @staticmethod
     def list_to_sql(c_list):
-        result = ''
+        result = []
         for v in c_list:
-            result += '"' + v + '"'
-        return '{' + result + '}'
+            result.append('"' + v + '"')
+        return '\'{' + ','.join(result) + '}\''
 
     @staticmethod
     def gen_resp(params, status_code=200):
-        response = jsonify(params)
+        if isinstance(params, Response):
+            return params
+
+        if not isinstance(params, dict) and not isinstance(params, list):
+            params = {'result': params}
+
+        response = make_response(json.dumps(params))
         response.status_code = status_code
         return response

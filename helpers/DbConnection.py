@@ -1,4 +1,5 @@
 import psycopg2
+import psycopg2.extras
 
 
 class DbConnection:
@@ -17,7 +18,7 @@ class DbConnection:
             )
 
     def cursor(self):
-        return self.db.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        return self.db.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
     def commit(self):
         self.db.commit()

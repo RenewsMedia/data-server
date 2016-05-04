@@ -1,6 +1,6 @@
 CREATE OR REPLACE FUNCTION tags_read (
   status TEXT DEFAULT 'any'
-) RETURNS SETOF RECORD LANGUAGE plpgsql SECURITY DEFINER AS $$
+) RETURNS SETOF "tags" LANGUAGE plpgsql SECURITY DEFINER AS $$
   BEGIN
     IF status = 'any' THEN
       RETURN QUERY
@@ -11,7 +11,7 @@ CREATE OR REPLACE FUNCTION tags_read (
       RETURN QUERY
       SELECT *
       FROM "tags"
-      WHERE "tags"."status" = $1;
+      WHERE "tags"."status" = $1::tag_status;
     END IF;
   END;
 $$;

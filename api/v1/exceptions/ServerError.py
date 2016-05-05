@@ -1,4 +1,4 @@
-from api.v1.exceptions.ProtoException import ProtoException
+from api.v1.generic.ProtoException import ProtoException
 
 
 class ServerError(ProtoException):

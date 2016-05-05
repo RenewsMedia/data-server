@@ -6,8 +6,8 @@ CREATE TABLE IF NOT EXISTS "contents" (
   "data"    INTEGER,
   "order"   INTEGER DEFAULT 0,
 
-  FOREIGN KEY ("article") REFERENCES "articles" ("id"),
-  FOREIGN KEY ("data")    REFERENCES "text_data" ("id"),
+  FOREIGN KEY ("article") REFERENCES "articles" ("id") ON DELETE CASCADE,
+  FOREIGN KEY ("data")    REFERENCES "text_data" ("id") ON DELETE CASCADE,
 
   PRIMARY KEY ("id")
 );

@@ -1,16 +1,20 @@
 CREATE OR REPLACE FUNCTION channels_create (
-  owner       INTEGER,
+  c_owner       INTEGER,
   name        TEXT,
   description TEXT
-) RETURNS INTEGER LANGUAGE plpgsql SECURITY DEFINER AS $$
+) RETURNS SETOF "channels" LANGUAGE plpgsql SECURITY DEFINER AS $$
   DECLARE
-    id INTEGER DEFAULT -1;
+    cid INTEGER DEFAULT -1;
   BEGIN
     INSERT
     INTO "channels" ("owner", "name", "description")
     VALUES ($1, $2, $3)
-    RETURNING "id" INTO id;
+    RETURNING "channels"."id" INTO cid;
 
-    RETURN id;
+    IF cid <> -1 THEN
+      PERFORM channel_roles_delegate('adm', cid, c_owner);
+    END IF;
+
+    RETURN QUERY SELECT * FROM channels_read_by_id(cid);
   END;
 $$;

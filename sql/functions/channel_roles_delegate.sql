@@ -6,8 +6,8 @@ CREATE OR REPLACE FUNCTION channel_roles_delegate (
   BEGIN
     UPDATE "channel_roles"
     SET "role" = $1
-    WHERE "channel" = $2 AND
-          "user"    = $3;
+    WHERE "channel_roles"."channel" = $2 AND
+          "channel_roles"."user"    = $3;
 
     IF NOT FOUND THEN
       INSERT

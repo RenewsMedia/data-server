@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS "comments" (
   "published" TIMESTAMP DEFAULT (now() at time zone 'utc'),
 
   FOREIGN KEY ("author") REFERENCES "users" ("id"),
-  FOREIGN KEY ("data")   REFERENCES "text_data" ("id"),
+  FOREIGN KEY ("data")   REFERENCES "text_data" ("id") ON DELETE CASCADE,
 
   PRIMARY KEY ("id")
 );

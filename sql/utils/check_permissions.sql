@@ -4,10 +4,10 @@ CREATE OR REPLACE FUNCTION check_permissions (
   code    TEXT
 ) RETURNS BOOLEAN LANGUAGE plpgsql SECURITY DEFINER AS $$
   DECLARE
-      access_codes VARCHAR[];
-      result BOOLEAN DEFAULT FALSE;
+      access_codes RECORD;
   BEGIN
-      SELECT INTO access_codes "roles"."access"
+      SELECT "roles"."access"
+      INTO access_codes
       FROM "roles"
       WHERE "roles"."code" = (
         SELECT "role"
@@ -17,9 +17,9 @@ CREATE OR REPLACE FUNCTION check_permissions (
       );
 
       IF FOUND THEN
-        result := (access_codes @> ARRAY['ALL']) OR (access_codes @> ARRAY[$3]);
+        RETURN (access_codes."access" @> ARRAY['ALL']::VARCHAR[]) OR (access_codes."access" @> ARRAY[$3]::VARCHAR[]);
       END IF;
 
-      RETURN result;
+      RETURN FALSE;
   END;
 $$;

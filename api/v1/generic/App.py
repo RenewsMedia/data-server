@@ -10,8 +10,13 @@ class App(Flask):
 
     def __init__(self, name):
         super(App, self).__init__(name)
-        self.config['SERVER_NAME'] = config['server']['host']
-        self.config['PROPAGATE_EXCEPTIONS'] = True
+
+        self.config.update(
+            SERVER_NAME=config['server']['host'],
+            PROPAGATE_EXCEPTIONS=True,
+            JSON_SORT_KEYS=False
+        )
+
         self.register_handlers()
 
     def register_handlers(self):

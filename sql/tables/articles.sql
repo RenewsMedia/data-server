@@ -7,8 +7,8 @@ CREATE TABLE IF NOT EXISTS "articles" (
   "published" TIMESTAMP DEFAULT (now() at time zone 'utc'),
   "hidden"    BOOLEAN DEFAULT FALSE,
 
-  FOREIGN KEY ("channel") REFERENCES "channels" ("id"),
-  FOREIGN KEY ("author")  REFERENCES "users" ("id"),
+  FOREIGN KEY ("channel") REFERENCES "channels" ("id") ON DELETE CASCADE,
+  FOREIGN KEY ("author")  REFERENCES "users" ("id") ON DELETE CASCADE,
 
   PRIMARY KEY ("id")
 );

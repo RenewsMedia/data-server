@@ -1,11 +1,24 @@
 CREATE OR REPLACE FUNCTION channels_delete (
-    id INTEGER
+    id INTEGER,
+    emitter INTEGER
 ) RETURNS BOOLEAN LANGUAGE plpgsql SECURITY DEFINER AS $$
-    BEGIN
-        DELETE
-          FROM "channels"
-         WHERE "id" = $1;
+  DECLARE
+    tmp RECORD;
+  BEGIN
+    SELECT *
+    INTO tmp
+    FROM "channels"
+    WHERE "channels"."id" = $1 AND
+          "channels"."owner" = $2;
 
-        RETURN FOUND;
-    END;
+    IF NOT FOUND THEN
+      RETURN FALSE;
+    END IF;
+
+    DELETE
+    FROM "channels"
+    WHERE "channels"."id" = $1;
+
+    RETURN FOUND;
+  END;
 $$;

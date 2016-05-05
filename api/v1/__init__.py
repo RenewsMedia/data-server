@@ -14,4 +14,7 @@ import api.v1.sign
 import api.v1.countries
 import api.v1.user
 import api.v1.users
+import api.v1.channel
+import api.v1.article
+import api.v1.contents
 import api.v1.tags

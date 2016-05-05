@@ -2,6 +2,10 @@
   "server": {
     "host": "localhost:5000"
   },
+  "auth": {
+    "id_cookie": "__uid",
+    "pass_cookie": "__ups"
+  },
   "db": {
     "host": "localhost",
     "port": "5432",
@@ -25,20 +29,16 @@
       "functions": [
         "article_tags_set", "articles_create", "channel_roles_delegate",
         "channel_roles_undelegate", "channels_create", "channels_delete",
-        "channels_update", "text_data_create", "text_data_update",
-        "comments_create", "comments_delete", "comments_update",
-        "contents_create", "users_read_by_id", "users_create",
-        "users_update", "users_update_password",
-        "tags_read", "tags_create", "tags_update"
+        "channels_read_by_id", "channels_update", "text_data_create",
+        "text_data_update", "comments_create", "comments_delete",
+        "comments_update", "contents_create", "users_read_by_id",
+        "users_create", "users_update", "users_update_password",
+        "users_search", "tags_read", "tags_create", "tags_update"
       ],
       "base_data": [
         "access_codes", "countries", "roles"
       ]
     },
     "install_order": ["types", "tables", "utils", "functions", "base_data"]
-  },
-  "auth": {
-    "id_cookie": "__uid",
-    "pass_cookie": "__ups"
   }
 }

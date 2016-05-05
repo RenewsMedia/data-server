@@ -2,7 +2,7 @@ import json
 from functools import wraps
 from flask import Flask, Response, make_response
 from helpers import config
-from api.v1.exceptions.ProtoException import ProtoException
+from api.v1.generic.ProtoException import ProtoException
 
 
 class App(Flask):

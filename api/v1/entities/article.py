@@ -1,6 +1,7 @@
 from flask import request
 from helpers import db, check_set
-from api.v1 import app, auth, contents
+from api.v1 import app, auth
+from api.v1.entities import contents
 from api.v1.exceptions.BadStructure import BadStructure
 from api.v1.exceptions.ServerError import ServerError
 

@@ -1,7 +1,8 @@
 from hashlib import md5
 from flask import request
 from helpers import db, config, check_set
-from api.v1 import app, user
+from api.v1 import app
+from api.v1.entities import user
 from api.v1.exceptions.BadStructure import BadStructure
 
 

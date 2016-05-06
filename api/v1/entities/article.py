@@ -6,10 +6,15 @@ from api.v1.exceptions.BadStructure import BadStructure
 from api.v1.exceptions.ServerError import ServerError
 
 
+def prepare_article(article):
+    article['created'] = article['created'].timestamp()
+    article['published'] = article['published'].timestamp()
+    return article
+
 def get_full_article(aid):
-    article = db.fetch_one("""
+    article = prepare_article(db.fetch_one("""
         SELECT * FROM "articles" WHERE "id" = {aid};
-    """.format(aid=aid))
+    """.format(aid=aid)))
 
     if not article:
         return False

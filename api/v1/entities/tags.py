@@ -9,13 +9,16 @@ def read_by_status(status='any'):
         SELECT * FROM tags_read('{status}');
     """.format(status=status))
 
+
 @app.route('/tags', methods=['GET'])
 def read_by_default_status():
     return read_by_status()
 
+
 @app.route('/tags/<status>', methods=['GET'])
 def read_by_defined_status(status):
     return read_by_status(status)
+
 
 @app.route('/tags', methods=['POST'])
 @auth.login_required
@@ -28,6 +31,7 @@ def create_tags():
     """.format(tags=app.list_to_sql(request.json['tags'])))
 
     return True
+
 
 @app.route('/tags', methods=['PUT'])
 @auth.login_required

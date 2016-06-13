@@ -8,6 +8,7 @@ from api.v1.exceptions.BadStructure import BadStructure
 def prepare_users(users):
     return [user.prepare_user(usr) for usr in users]
 
+
 def prepare_query(query):
     for sym in ['.', ',']:
         query.replace(sym, ' ')

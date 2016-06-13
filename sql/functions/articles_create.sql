@@ -8,9 +8,9 @@ CREATE OR REPLACE FUNCTION articles_create (
     id INTEGER DEFAULT -1;
   BEGIN
     IF check_permissions($1, $2, 'WRITE_POSTS') THEN
-      INSERT INTO "articles" ("author", "title")
-      VALUES ($2, $3)
-      RETURNING "id" INTO id;
+      INSERT INTO "articles" ("channel", "author", "title")
+      VALUES ($1, $2, $3)
+      RETURNING "articles"."id" INTO id;
 
       IF FOUND THEN
         PERFORM article_tags_set(id, $4);

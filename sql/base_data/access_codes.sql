@@ -4,4 +4,5 @@ INSERT INTO "access_codes" ("code", "title") VALUES
 ('DELETE_POSTS',        'Delete posts'),
 ('FEEDBACK_MANAGEMENT', 'Feedback management'),
 ('DELETE_COMMENTS',     'Delete users comments'),
-('CHANGE_INFO',         'Change info about channel');
+('CHANGE_INFO',         'Change info about channel'),
+('DELETE_CHANNEL',      'Delete channel');

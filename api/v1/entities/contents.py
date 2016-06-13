@@ -7,5 +7,5 @@ def create_contents(article_id, contents):
         if not contents_entry['url'] and not contents_entry['data']:
             raise BadStructure
         db.execute("""
-            PERFORM contents_create('{type}', {aid}, '{url}', '{data}', '{order}')
+            SELECT * FROM contents_create('{type}', {aid}, '{url}', '{data}', '{order}')
         """.format(aid=article_id, **contents_entry))

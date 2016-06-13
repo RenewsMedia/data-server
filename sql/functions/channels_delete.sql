@@ -1,5 +1,5 @@
 CREATE OR REPLACE FUNCTION channels_delete (
-    id INTEGER,
+    id      INTEGER,
     emitter INTEGER
 ) RETURNS BOOLEAN LANGUAGE plpgsql SECURITY DEFINER AS $$
   DECLARE
@@ -11,7 +11,7 @@ CREATE OR REPLACE FUNCTION channels_delete (
     WHERE "channels"."id" = $1 AND
           "channels"."owner" = $2;
 
-    IF NOT FOUND THEN
+    IF NOT FOUND OR NOT check_permissions(tmp."id", emitter, 'DELETE_CHANNEL') THEN
       RETURN FALSE;
     END IF;
 

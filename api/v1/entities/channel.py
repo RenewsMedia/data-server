@@ -5,14 +5,17 @@ from api.v1.exceptions.BadStructure import BadStructure
 
 
 def prepare_channel(channel):
-    channel['date_create'] = channel['date_create'].timestamp()
+    if channel is not None:
+        channel['date_create'] = channel['date_create'].timestamp()
     return channel
+
 
 @app.route('/channel/<int:cid>', methods=['GET'])
 def get_channel_info(cid):
     return prepare_channel(db.fetch_one("""
         SELECT * FROM channels_read_by_id({cid});
     """.format(cid=cid)))
+
 
 @app.route('/channel', methods=['POST'])
 @auth.login_required
@@ -24,6 +27,7 @@ def create_channel():
         SELECT * FROM channels_create({owner}, '{name}', '{description}');
     """.format(owner=app.user['id'], **request.json)))
 
+
 @app.route('/channel/<int:cid>', methods=['PUT'])
 @auth.login_required
 def update_channel(cid):
@@ -33,6 +37,7 @@ def update_channel(cid):
     return prepare_channel(db.fetch_one("""
         SELECT * FROM channels_update({cid}, '{name}', '{description}', {emitter});
     """.format(emitter=app.user['id'], cid=cid, **request.json)))
+
 
 @app.route('/channel/<int:cid>', methods=['DELETE'])
 @auth.login_required

@@ -1,27 +1,27 @@
 CREATE OR REPLACE FUNCTION contents_create (
-  type    TEXT,
+  type    article_content,
   article INTEGER,
   url     TEXT,
   data    TEXT,
-  c_order   INTEGER
+  c_order INTEGER
 ) RETURNS INTEGER LANGUAGE plpgsql SECURITY DEFINER AS $$
   DECLARE
-    id INTEGER DEFAULT -1;
+    c_id INTEGER DEFAULT -1;
     data_id INTEGER;
   BEGIN
+    DELETE
+    FROM "contents"
+    WHERE "contents"."article" = $2;
+
     data_id := text_data_create($4);
 
-    IF data_id THEN
+    IF data_id > -1 THEN
       INSERT
       INTO "contents" ("type", "article", "url", "data", "order")
       VALUES ($1, $2, $3, data_id, $5)
-      RETURNING "id" INTO id;
-
-      IF NOT FOUND THEN
-        id := -1;
-      END IF;
+      RETURNING "id" INTO c_id;
     END IF;
 
-    RETURN id;
+    RETURN c_id;
   END;
 $$;

@@ -14,14 +14,18 @@ def prepare_article(article):
 
 def get_full_article(aid):
     article = prepare_article(db.fetch_one("""
-        SELECT * FROM "articles" WHERE "id" = {aid};
+        SELECT * FROM articles_read_by_id({aid});
     """.format(aid=aid)))
 
     if not article:
         return False
 
     article['contents'] = db.fetch("""
-        SELECT * FROM "contents" WHERE "article" = {aid} ORDER BY "order";
+        SELECT co.*, td."data" as data
+        FROM "contents" co, "text_data" td
+        WHERE co."data" = td."id" AND
+          co."article" = {aid}
+        ORDER BY co."order";
     """.format(aid=aid))
     return article
 

@@ -10,6 +10,14 @@ CREATE OR REPLACE FUNCTION contents_create (
     data_id INTEGER;
   BEGIN
     DELETE
+    FROM "text_data"
+    WHERE "text_data"."id" IN(
+      SELECT "contents"."data"
+      FROM "contents"
+      WHERE "contents"."article" = $2
+    );
+
+    DELETE
     FROM "contents"
     WHERE "contents"."article" = $2;
 

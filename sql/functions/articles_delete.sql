@@ -12,14 +12,14 @@ CREATE OR REPLACE FUNCTION articles_delete (
       SELECT "articles"."channel" FROM "articles" WHERE "articles"."id" = $1
     );
 
-    IF NOT check_permissions(channel."id", emitter, 'DELETE_POSTS') THEN
-      RETURN FALSE;
+    IF check_permissions(channel."id", emitter, 'DELETE_POSTS') THEN
+      DELETE
+      FROM "articles"
+      WHERE "id" = $1;
+
+      RETURN TRUE;
     END IF;
 
-    DELETE
-    FROM "articles"
-    WHERE "id" = $1;
-
-    RETURN TRUE;
+    RETURN FALSE;
   END;
 $$;

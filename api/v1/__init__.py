@@ -16,5 +16,6 @@ import api.v1.entities.user
 import api.v1.entities.users
 import api.v1.entities.channel
 import api.v1.entities.article
-import api.v1.entities.contents
+import api.v1.entities.comment
+import api.v1.entities.comments
 import api.v1.entities.tags

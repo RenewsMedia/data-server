@@ -31,10 +31,10 @@
         "channel_roles_undelegate", "channels_create", "channels_delete",
         "channels_read_by_id", "channels_update", "text_data_create",
         "text_data_update", "comments_create", "comments_delete",
-        "comments_update", "contents_create", "users_read_by_id",
-        "users_create", "users_update", "users_update_password",
-        "users_search", "tags_read", "tags_create", "tags_update",
-        "articles_update", "articles_delete"
+        "contents_create", "users_read_by_id", "users_create",
+        "users_update", "users_update_password", "users_search",
+        "tags_read", "tags_create", "tags_update", "articles_update",
+        "articles_delete", "comments_read", "comments_read_single"
       ],
       "base_data": [
         "access_codes", "countries", "roles"

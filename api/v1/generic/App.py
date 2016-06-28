@@ -2,6 +2,7 @@ import json
 from functools import wraps
 from flask import Flask, Response, make_response
 from helpers import config
+from api.v1.generic.crossdomain import crossdomain
 from api.v1.generic.ProtoException import ProtoException
 
 
@@ -25,6 +26,7 @@ class App(Flask):
     # Decorators
     def route(self, route, **options):
         def decorator(f):
+            @crossdomain(origin='*')
             @wraps(f)
             def wrapped(*args, **kwargs):
                 result = f(*args, **kwargs)

@@ -2,7 +2,6 @@ CREATE TABLE IF NOT EXISTS "contents" (
   "id"      SERIAL NOT NULL,
   "type"    ARTICLE_CONTENT DEFAULT 'text',
   "article" INTEGER,
-  "url"     VARCHAR(300),
   "data"    INTEGER,
   "order"   INTEGER DEFAULT 0,
 

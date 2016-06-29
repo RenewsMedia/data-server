@@ -27,6 +27,16 @@ def get_full_article(aid):
           co."article" = {aid}
         ORDER BY co."order";
     """.format(aid=aid))
+
+    article['tags'] = db.fetch("""
+        SELECT *
+        FROM "tags"
+        WHERE "id" IN(
+          SELECT "tag"
+          FROM "article_tags"
+          WHERE "article" = {aid}
+        );
+    """.format(aid=aid))
     return article
 
 

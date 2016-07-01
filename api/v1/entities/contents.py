@@ -4,7 +4,7 @@ from api.v1.exceptions.BadStructure import BadStructure
 
 def create_contents(article_id, contents):
     for contents_entry in contents:
-        if not contents_entry['data']:
+        if 'data' not in contents_entry:
             raise BadStructure
         db.execute("""
             SELECT * FROM contents_create('{type}', {aid}, '{data}', '{order}')

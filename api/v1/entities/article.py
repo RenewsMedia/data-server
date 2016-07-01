@@ -48,21 +48,21 @@ def read_article(aid):
 @app.route('/article', methods=['POST'])
 @auth.login_required
 def create_article():
-    if not request.json or not check_set(['channel', 'title', 'contents', 'tags'], request.json):
+    if not check_set(['channel', 'title', 'contents', 'tags'], request.form):
         raise BadStructure
 
-    if isinstance(request.json['tags'], list):
-        request.json['tags'] = app.list_to_sql(request.json['tags'])
+    if isinstance(request.form['tags'], list):
+        request.form['tags'] = app.list_to_sql(request.form['tags'])
 
     cursor = db.cursor()
     cursor.execute("""
         SELECT * FROM articles_create({channel}, {author}, '{title}', {tags}, {contents});
-    """.format(author=app.user['id'], **request.json))
+    """.format(author=app.user['id'], **request.form))
     aid = cursor.fetchall()[0]['articles_create']
 
     if aid != -1:
         try:
-            contents.create_contents(aid, request.json['contents'])
+            contents.create_contents(aid, request.form['contents'])
         except BadStructure:
             db.rollback()
             cursor.close()
@@ -80,21 +80,21 @@ def create_article():
 @app.route('/article/<int:aid>', methods=['PUT'])
 @auth.login_required
 def update_article(aid):
-    if not request.json or not check_set(['title', 'contents', 'tags'], request.json):
+    if not check_set(['title', 'contents', 'tags'], request.form):
         raise BadStructure
 
-    if isinstance(request.json['tags'], list):
-        request.json['tags'] = app.list_to_sql(request.json['tags'])
+    if isinstance(request.form['tags'], list):
+        request.form['tags'] = app.list_to_sql(request.form['tags'])
 
     cursor = db.cursor()
     cursor.execute("""
         SELECT * FROM articles_update({aid}, {emitter}, '{title}', {tags});
-    """.format(aid=aid, emitter=app.user['id'], **request.json))
+    """.format(aid=aid, emitter=app.user['id'], **request.form))
     result = cursor.fetchall()[0]['articles_update']
 
     if result:
         try:
-            contents.create_contents(aid, request.json['contents'])
+            contents.create_contents(aid, request.form['contents'])
         except BadStructure:
             db.rollback()
             cursor.close()

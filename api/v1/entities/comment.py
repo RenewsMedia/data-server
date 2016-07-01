@@ -19,12 +19,12 @@ def read_comment(cid):
 @app.route('/comment', methods=['POST'])
 @auth.login_required
 def create_comment():
-    if not request.json or not check_set(['article', 'text'], request.json):
+    if not check_set(['article', 'text'], request.form):
         raise BadStructure
 
     return prepare_comment(db.fetch_one("""
         SELECT * FROM comments_create({author}, {article}, '{text}', NULL);
-    """.format(author=app.user['id'], **request.json)))
+    """.format(author=app.user['id'], **request.form)))
 
 
 @app.route('/comment/<int:cid>', methods=['DELETE'])

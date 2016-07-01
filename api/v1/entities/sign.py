@@ -13,27 +13,26 @@ def sign_in(login, password):
     """.format(login=login))
 
     if usr and usr['password'] == md5(password.encode('utf-8')).hexdigest():
-        response = app.gen_resp({'result': True})
-        response.set_cookie(config['auth']['id_cookie'], str(usr['id']))
-        response.set_cookie(config['auth']['pass_cookie'], usr['password'])
-        return response
-
+        return {
+            'id': str(usr['id']),
+            'password': usr['password']
+        }
     return False
 
 
 # User authentication api
 @app.route('/sign/in', methods=['POST'])
 def sign_in_from_json():
-    if not request.json or not check_set(['login', 'password'], request.json):
+    if not check_set(['login', 'password'], request.form):
         raise BadStructure
-    return sign_in(**request.json)
+    return sign_in(request.form['login'], request.form['password'])
 
 
 @app.route('/sign/up', methods=['POST'])
 def sign_up():
-    usr = user.create(request.json)
+    usr = user.create(request.form)
     if len(usr):
-        return sign_in(usr['login'], request.json['password'])
+        return sign_in(usr['login'], request.form['password'])
 
     return False
 

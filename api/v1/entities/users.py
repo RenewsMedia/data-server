@@ -17,7 +17,7 @@ def prepare_query(query):
 
 @app.route('/users', methods=['GET'])
 def search():
-    if not request.args:
+    if not len(request.args):
         raise BadStructure
 
     return prepare_users(db.fetch("""

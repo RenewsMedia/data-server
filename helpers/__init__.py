@@ -9,9 +9,7 @@ db = DbConnection(config['db'])
 
 
 def check_set(schema, c_dict):
-    keys = c_dict.keys()
-    for i in schema:
-        if not i in keys:
-            return False
+    if not isinstance(c_dict, dict):
+        return False
 
-    return True
+    return all(k in c_dict for k in schema)

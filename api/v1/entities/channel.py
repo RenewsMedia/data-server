@@ -20,23 +20,23 @@ def get_channel_info(cid):
 @app.route('/channel', methods=['POST'])
 @auth.login_required
 def create_channel():
-    if not request.json or not check_set(['name', 'description'], request.json):
+    if not check_set(['name', 'description'], request.form):
         raise BadStructure
 
     return prepare_channel(db.fetch_one("""
         SELECT * FROM channels_create({owner}, '{name}', '{description}');
-    """.format(owner=app.user['id'], **request.json)))
+    """.format(owner=app.user['id'], **request.form)))
 
 
 @app.route('/channel/<int:cid>', methods=['PUT'])
 @auth.login_required
 def update_channel(cid):
-    if not request.json or not check_set(['name', 'description'], request.json):
+    if not check_set(['name', 'description'], request.form):
         raise BadStructure
 
     return prepare_channel(db.fetch_one("""
         SELECT * FROM channels_update({cid}, '{name}', '{description}', {emitter});
-    """.format(emitter=app.user['id'], cid=cid, **request.json)))
+    """.format(emitter=app.user['id'], cid=cid, **request.form)))
 
 
 @app.route('/channel/<int:cid>', methods=['DELETE'])

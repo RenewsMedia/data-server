@@ -23,12 +23,12 @@ def read_by_defined_status(status):
 @app.route('/tags', methods=['POST'])
 @auth.login_required
 def create_tags():
-    if not request.json or not check_set(['tags'], request.json):
+    if not check_set(['tags'], request.form):
         raise BadStructure
 
     db.fetch_one("""
         SELECT * FROM tags_create({tags});
-    """.format(tags=app.list_to_sql(request.json['tags'])))
+    """.format(tags=app.list_to_sql(request.form['tags'])))
 
     return True
 
@@ -36,12 +36,12 @@ def create_tags():
 @app.route('/tags', methods=['PUT'])
 @auth.login_required
 def update_tags():
-    if not request.json or not check_set(['tags', 'status'], request.json):
+    if not check_set(['tags', 'status'], request.form):
         raise BadStructure
 
-    if request.json['status'] not in ['new', 'approved', 'declined']:
+    if request.form['status'] not in ['new', 'approved', 'declined']:
         raise BadStructure
 
     return db.fetch_one("""
         SELECT * FROM tags_update({tags}, '{status}');
-    """.format(tags=app.list_to_sql(request.json['tags']), status=request.json['status']))['tags_update']
+    """.format(tags=app.list_to_sql(request.form['tags']), status=request.form['status']))['tags_update']
